@@ -4,7 +4,7 @@ const express = require("express"),
   passport = require("passport"),
   LocalStrategy = require("passport-local"),
   passportLocalMongoose = require("passport-local-mongoose"),
-  User = require("./models/u");
+  User = require("./models/user");
 
 // setup mongoose
 mongoose
@@ -41,6 +41,12 @@ app.get("/", (req, res) => {
 
 app.get("/secret", (req, res) => {
   res.render("secret");
+});
+
+// AUTH ROUTES
+// register route
+app.get("/register", (req, res) => {
+  res.render("register");
 });
 
 // listener
