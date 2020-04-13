@@ -49,6 +49,22 @@ app.get("/register", (req, res) => {
   res.render("register");
 });
 
+// post route
+app.post("/register", (req, res) => {
+  User.register(
+    new User({ username: req.body.username }),
+    req.body.password,
+    (err, user) => {
+      if (err) {
+        console.log(err);
+      } else {
+        passport.authenticate("local")(req, res, () => {
+          res.redirect("/secret");
+        });
+      }
+    }
+  );
+});
 // listener
 const port = process.env.PORT || 3000;
 app.listen(port, () =>
