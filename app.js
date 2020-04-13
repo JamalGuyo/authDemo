@@ -2,8 +2,9 @@ const express = require("express"),
   mongoose = require("mongoose"),
   bodyParser = require("body-parser"),
   passport = require("passport"),
-  LocalStrategy = require("passport-local");
-passportLocalMongoose = require("passport-local-mongoose");
+  LocalStrategy = require("passport-local"),
+  passportLocalMongoose = require("passport-local-mongoose"),
+  User = require("./models/u");
 
 // setup mongoose
 mongoose
@@ -19,6 +20,19 @@ const app = express();
 // setup
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// auth setup
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(
+  require("express-session")({
+    secret: "Js is awesome",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // routes
 app.get("/", (req, res) => {
