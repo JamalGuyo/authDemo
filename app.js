@@ -31,6 +31,7 @@ app.use(
     saveUninitialized: false,
   })
 );
+passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -65,6 +66,20 @@ app.post("/register", (req, res) => {
     }
   );
 });
+
+// SIGN IN
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/secret",
+    failureRedirect: "/login",
+  }),
+  (re, res) => {}
+);
 // listener
 const port = process.env.PORT || 3000;
 app.listen(port, () =>
